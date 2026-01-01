@@ -1,0 +1,95 @@
+pipeline {
+    agent any
+    
+    environment {
+        SONAR_TOKEN = credentials('sonar-token')
+        SONAR_HOST_URL = 'http://localhost:9999'
+    }
+    
+    stages {
+        stage('Clonage') {
+            steps {
+                echo 'Clonage du repository...'
+                checkout scm
+                sh 'git checkout main || git checkout master'
+            }
+        }
+        
+        stage('Build Maven - Car') {
+            steps {
+                dir('car') {
+                    echo 'Build Maven du service Car...'
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
+        
+        stage('Build Maven - Client') {
+            steps {
+                dir('client') {
+                    echo 'Build Maven du service Client...'
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
+        
+        stage('Build Maven - Gateway') {
+            steps {
+                dir('gateway') {
+                    echo 'Build Maven du service Gateway...'
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
+        
+        stage('Build Maven - Server Eureka') {
+            steps {
+                dir('server_eureka') {
+                    echo 'Build Maven du service Server Eureka...'
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
+        
+        stage('Analyse SonarQube - Car') {
+            steps {
+                dir('car') {
+                    echo 'Exécution de l\'analyse SonarQube pour Car...'
+                    sh "mvn sonar:sonar -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}"
+                }
+            }
+        }
+        
+        stage('Analyse SonarQube - Client') {
+            steps {
+                dir('client') {
+                    echo 'Exécution de l\'analyse SonarQube pour Client...'
+                    sh "mvn sonar:sonar -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}"
+                }
+            }
+        }
+        
+        stage('Docker Compose - Build et Déploiement') {
+            steps {
+                dir('deploy') {
+                    echo 'Déploiement avec Docker Compose...'
+                    sh 'docker-compose down || true'
+                    sh 'docker-compose up -d --build'
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Pipeline exécuté avec succès!'
+        }
+        failure {
+            echo 'Pipeline échoué. Vérifiez les logs pour plus de détails.'
+        }
+        always {
+            echo 'Nettoyage...'
+        }
+    }
+}
+

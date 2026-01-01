@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/omaarjb-Pipeline-CI-CD-microservices-avec-Jenkins-GitHub-SonarQube-Docker-Compose-et_Ngrok-main/car/pom.xml" />
+        <option value="$PROJECT_DIR$/Pipeline-CI-CD-microservices-avec-Jenkins-GitHub-SonarQube-Docker-Compose-et_Ngrok-main/client/pom.xml" />
+        <option value="$PROJECT_DIR$/Pipeline-CI-CD-microservices-avec-Jenkins-GitHub-SonarQube-Docker-Compose-et_Ngrok-main/gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/Pipeline-CI-CD-microservices-avec-Jenkins-GitHub-SonarQube-Docker-Compose-et_Ngrok-main/server_eureka/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_24" default="true" project-jdk-name="openjdk-24" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>
